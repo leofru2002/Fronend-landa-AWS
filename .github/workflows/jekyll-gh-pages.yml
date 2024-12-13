@@ -1,45 +1,29 @@
-# Workflow para construir y desplegar un sitio Jekyll en GitHub Pages
 name: Deploy Jekyll to GitHub Pages
 
 on:
   push:
-    branches: ["main"] # Asegúrate de usar la rama principal correcta
-  workflow_dispatch: # Permite ejecutar el workflow manualmente desde la pestaña Actions
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  # Job para construir el sitio
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Verifica y clona el repositorio
+        uses: actions/checkout@v4
+
       - name: Setup Pages
-        uses: actions/configure-pages@v5 # Configura GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./ # Ruta donde está el sitio Jekyll
-          destination: ./_site # Carpeta de salida generada por Jekyll
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # Sube el sitio generado como un artefacto temporal
 
-  # Job para desplegar el sitio
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build # Depende del job "build"
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4 # Despliega el artefacto a GitHub Pages
+        uses: actions/deploy-pages@v4
