@@ -1,5 +1,7 @@
 const API_BASE_URL = 'https://vtydmxkaqj.execute-api.us-east-1.amazonaws.com'; 
 
+let tasks = []; // Variable global para almacenar las tareas
+
 document.addEventListener('DOMContentLoaded', () => {
   const taskForm = document.getElementById('task-form');
   const tasksTableBody = document.getElementById('tasks-table');
@@ -17,11 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     taskForm.reset();
+    document.getElementById('task-id').value = ''; // Limpia el ID oculto
     loadTasks();
   });
 
   async function loadTasks() {
-    const tasks = await getTasks();
+    tasks = await getTasks(); // Carga las tareas y las almacena en la variable global
     tasksTableBody.innerHTML = '';
     tasks.forEach(task => {
       const row = document.createElement('tr');
@@ -38,7 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.editTask = (id) => {
-    const task = tasks.find(task => task.id === id);
+    const task = tasks.find(task => task.id === id); // Busca la tarea por ID en la lista global
+    if (!task) {
+      alert('Tarea no encontrada');
+      return;
+    }
     document.getElementById('task-id').value = task.id;
     document.getElementById('title').value = task.title;
     document.getElementById('description').value = task.description;
@@ -49,42 +56,59 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
   };
 
-  loadTasks();
+  loadTasks(); // Cargar las tareas al inicio
 });
 
 async function getTasks() {
-  const response = await fetch(`${API_BASE_URL}/tasks`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  const data = await response.json();
-  return data.body.tasks;
+  try {
+    const response = await fetch(`${API_BASE_URL}/tasks`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data.body.tasks || [];
+  } catch (error) {
+    console.error('Error al obtener las tareas:', error);
+    return [];
+  }
 }
 
 async function createTask(task) {
-  await fetch(`${API_BASE_URL}/tasks`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(task)
-  });
+  try {
+    await fetch(`${API_BASE_URL}/tasks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    });
+  } catch (error) {
+    console.error('Error al crear la tarea:', error);
+  }
 }
 
 async function updateTask(id, task) {
-  await fetch(`${API_BASE_URL}/tasks/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(task)
-  });
+  try {
+    await fetch(`${API_BASE_URL}/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    });
+  } catch (error) {
+    console.error('Error al actualizar la tarea:', error);
+  }
 }
 
 async function deleteTask(id) {
-  await fetch(`${API_BASE_URL}/tasks/${id}`, {
-    method: 'DELETE'
-  });
+  try {
+    await fetch(`${API_BASE_URL}/tasks/${id}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Error al eliminar la tarea:', error);
+  }
 }
