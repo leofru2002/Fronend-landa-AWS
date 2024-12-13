@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.handleDeleteTask = async (id) => {
     try {
       await deleteTask(id); // Llama a la función que elimina la tarea
+      alert('Tarea eliminada con éxito');
       loadTasks(); // Recarga las tareas después de eliminar
     } catch (error) {
       console.error('Error al eliminar la tarea:', error);
@@ -64,9 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (id) {
       // Si hay un ID, estamos editando
       await updateTask(id, { title, description });
+      alert('Tarea editada con éxito');
     } else {
       // Si no hay un ID, estamos creando
       await createTask({ title, description });
+      alert('Tarea creada con éxito');
     }
 
     taskModal.hide(); // Cierra el modal después de guardar

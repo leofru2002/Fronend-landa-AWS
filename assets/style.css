@@ -1,9 +1,45 @@
-.floating-btn {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0d6efd;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .table {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .table thead {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  .table td, .table th {
+    text-align: center;
+  }
+  
+  button {
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+  }
+  
+  .floating-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    background-color: #0d6efd;
+    background: linear-gradient(135deg, #0d6efd, #42a5f5);
     color: white;
     border: none;
     border-radius: 50%;
@@ -15,5 +51,36 @@
     font-size: 24px;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .floating-btn:hover {
+    background: linear-gradient(135deg, #42a5f5, #0d6efd);
+  }
+  
+  .modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    background-color: #0d6efd;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .modal-body {
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
