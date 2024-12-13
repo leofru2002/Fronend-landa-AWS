@@ -1,14 +1,8 @@
 title: Gestor de Tareas
 description: Una aplicación web para gestionar tareas.
-baseurl: "/Fronend-landa-AWS" # Este debe coincidir con el nombre del repositorio
-url: "https://leofru2002.github.io" # La URL base de tu GitHub Pages (sin el nombre del repo)
-theme: minima # Tema predeterminado de Jekyll
-
-# Excluir archivos innecesarios que no deben ser procesados por Jekyll
+baseurl: "/Fronend-landa-AWS" # Nombre del repositorio
+url: "https://leofru2002.github.io" # URL principal sin incluir el repo
+theme: minima
 exclude:
   - .github/
   - README.md
-
-# Configuración para procesar archivos estáticos y asegurar rutas correctas
-plugins:
-  - jekyll-seo-tag
