@@ -3,28 +3,18 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # o master, dependiendo de tu rama principal
+      - main  # Cambia a master si es tu rama principal
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up Node.js (si usas Node.js para tu proyecto)
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Asegúrate de que sea compatible con tu proyecto
-
-    - name: Install dependencies (si usas dependencias)
-      run: npm install
-
-    - name: Build (si usas herramientas de construcción como webpack, o si no, puedes omitir esta parte)
-      run: npm run build  # Cambia esto si usas otro comando de build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public  # Directorio donde están los archivos compilados, si no usas compilación, usa la raíz del proyecto
+        publish_dir: ./  # Usa el directorio raíz porque ahí está tu index.html
