@@ -1,7 +1,7 @@
 /* Fondo y fuente global */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color:rgb(139, 107, 139);
+    background-color:rgb(255, 255, 255);
     margin: 0;
     padding: 0;
     color: #333;
@@ -10,7 +10,7 @@ body {
   /* Contenedor principal */
   .container {
     margin-top: 40px;
-    background: rgb(201, 63, 130);
+    background: rgb(229, 226, 228);
     border-radius: 15px;
     padding: 20px 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
