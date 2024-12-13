@@ -1,30 +1,14 @@
-const API_BASE_URL = 'https://vtydmxkaqj.execute-api.us-east-1.amazonaws.com'; 
+const API_BASE_URL = 'https://vtydmxkaqj.execute-api.us-east-1.amazonaws.com';
 
 let tasks = []; // Variable global para almacenar las tareas
 
 document.addEventListener('DOMContentLoaded', () => {
-  const taskForm = document.getElementById('task-form');
   const tasksTableBody = document.getElementById('tasks-table');
-
-  taskForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const taskId = document.getElementById('task-id').value;
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-
-    if (taskId) {
-      await updateTask(taskId, { title, description });
-    } else {
-      await createTask({ title, description });
-    }
-
-    taskForm.reset();
-    document.getElementById('task-id').value = ''; // Limpia el ID oculto
-    loadTasks();
-  });
+  const taskForm = document.getElementById('task-form');
+  const taskModal = new bootstrap.Modal(document.getElementById('taskModal'), {});
 
   async function loadTasks() {
-    tasks = await getTasks(); // Carga las tareas y las almacena en la variable global
+    tasks = await getTasks(); // Obtén las tareas del backend
     tasksTableBody.innerHTML = '';
     tasks.forEach(task => {
       const row = document.createElement('tr');
@@ -33,30 +17,63 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${task.description}</td>
         <td>
           <button class="btn btn-warning btn-sm" onclick="editTask('${task.id}')">Editar</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteTask('${task.id}')">Eliminar</button>
+          <button class="btn btn-danger btn-sm" onclick="handleDeleteTask('${task.id}')">Eliminar</button>
         </td>
       `;
       tasksTableBody.appendChild(row);
     });
   }
 
+  window.openTaskModal = () => {
+    document.getElementById('task-id').value = ''; // Limpia el campo oculto para indicar que es una nueva tarea
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('taskModalLabel').innerText = 'Nueva Tarea';
+    taskModal.show(); // Abre el modal
+  };
+
   window.editTask = (id) => {
-    const task = tasks.find(task => task.id === id); // Busca la tarea por ID en la lista global
+    const task = tasks.find(task => task.id === id); // Busca la tarea en la lista
     if (!task) {
       alert('Tarea no encontrada');
       return;
     }
+    // Rellena el formulario del modal con los datos de la tarea
     document.getElementById('task-id').value = task.id;
     document.getElementById('title').value = task.title;
     document.getElementById('description').value = task.description;
+    document.getElementById('taskModalLabel').innerText = 'Editar Tarea';
+    taskModal.show();
   };
 
-  window.deleteTask = async (id) => {
-    await deleteTask(id);
-    loadTasks();
+  window.handleDeleteTask = async (id) => {
+    try {
+      await deleteTask(id); // Llama a la función que elimina la tarea
+      loadTasks(); // Recarga las tareas después de eliminar
+    } catch (error) {
+      console.error('Error al eliminar la tarea:', error);
+    }
   };
 
-  loadTasks(); // Cargar las tareas al inicio
+  taskForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('task-id').value;
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+
+    if (id) {
+      // Si hay un ID, estamos editando
+      await updateTask(id, { title, description });
+    } else {
+      // Si no hay un ID, estamos creando
+      await createTask({ title, description });
+    }
+
+    taskModal.hide(); // Cierra el modal después de guardar
+    loadTasks(); // Recarga las tareas
+  });
+
+  loadTasks(); // Carga las tareas al inicio
 });
 
 async function getTasks() {
@@ -111,4 +128,20 @@ async function deleteTask(id) {
   } catch (error) {
     console.error('Error al eliminar la tarea:', error);
   }
+}
+
+// Funciones para el modal de endpoints
+function openEndpointsModal() {
+  const endpointsModal = new bootstrap.Modal(document.getElementById('endpointsModal'), {});
+  endpointsModal.show();
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      alert(`Copiado al portapapeles: ${text}`);
+    })
+    .catch(err => {
+      console.error('Error al copiar al portapapeles:', err);
+    });
 }
