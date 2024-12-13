@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+
+  <div class="container my-5">
+    <h1 class="text-center mb-4">Gestor de tareas</h1>
+    <form id="task-form" class="mb-4">
+      <input type="hidden" id="task-id">
+      <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
+        <input type="text" id="title" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <input type="text" id="description" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody id="tasks-table">
+        <!-- Tasks will be dynamically inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>
